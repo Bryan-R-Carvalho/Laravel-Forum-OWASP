@@ -41,7 +41,7 @@ class ComentarioController extends Controller
         return redirect()->route('comentarios.index');
     }
     public function show($id){
-        $comentario = $this->comentario->findOrfail($id);
+        $comentario = $this->comentario->find($id);
         return view('comentarios.show', compact('comentario'));
     }
     public function edit($id){
