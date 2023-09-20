@@ -1,9 +1,9 @@
 @extends('template.layout')
-@section('title', 'Home')
+@section('title', 'home')
 @section('body')
 <div class="bg-gray-900 min-h-screen p-6 pt-16">
     <div class="grid grid-cols-3 gap-10">
-        <div >
+        <div>
             <div class="bg-gray-800 p-5 rounded-lg shadow-lg col-span-1">
                 @auth
                     <form action="{{ route('comentario.store') }}" method="POST" class="flex flex-col items-center">
