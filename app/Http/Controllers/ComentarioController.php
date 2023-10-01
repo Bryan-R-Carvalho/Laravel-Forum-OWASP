@@ -7,6 +7,9 @@ use App\Models\{
     Comentario,
     User
 };
+
+use function Pest\Laravel\json;
+
 class ComentarioController extends Controller
 {
     // protected $comentario;
@@ -26,6 +29,15 @@ class ComentarioController extends Controller
 
         return view('home', compact('comentarios'));
     }
+    public function show($id){
+        try{
+            $comentario = $this->comentario->find($id);
+        return view('comentarios.show', compact('comentario'));
+        }catch(\Exception $e){
+            return json($e, 500);
+        }
+        
+    }
     public function create(){
         return view('comentarios.create');
     }
@@ -40,14 +52,12 @@ class ComentarioController extends Controller
 
         return redirect()->route('comentarios.index');
     }
-    public function show($id){
-        $comentario = $this->comentario->find($id);
-        return view('comentarios.show', compact('comentario'));
-    }
+
     public function edit($id){
         $comentario = $this->comentario->find($id);
         return view('comentarios.edit', compact('comentario'));
     }
+    
     public function update(Request $request, $id){
         $this->comentario->find($id)->update($request->all());
         return redirect()->route('comentarios.index');

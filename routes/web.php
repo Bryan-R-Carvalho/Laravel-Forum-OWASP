@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\{ProfileController,
-    ComentarioController};
-use App\Models\Comentario;
+    ComentarioController,
+    UserController};
+use App\Models\{Comentario};
 use Illuminate\Support\Facades\Route;
 
 /*
