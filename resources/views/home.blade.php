@@ -2,7 +2,7 @@
 @section('title', 'home')
 @section('body')
 <div class="bg-gray-900 min-h-screen p-6 pt-16">
-    <div class="grid grid-cols-3 gap-10">
+    <div class="grid grid-cols-3 gap-8">
         <div>
             <div class="bg-gray-800 p-5 rounded-lg shadow-lg col-span-1">
                 @auth
@@ -20,7 +20,7 @@
                 @endauth
             </div>
         </div>
-        <div class="col-span-2">
+        <div>
             @foreach ($comentarios as $comentario)
             <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
                 <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
