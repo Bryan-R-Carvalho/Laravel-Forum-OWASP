@@ -12,10 +12,6 @@ use function Pest\Laravel\json;
 
 class ComentarioController extends Controller
 {
-    // protected $comentario;
-    // public function __construct(Comentario $comentario){
-    //     $this->comentario = $comentario;
-    // }
 
     public function __construct(
         protected Comentario $comentario
@@ -25,6 +21,7 @@ class ComentarioController extends Controller
         $comentarios = DB::table('comentarios')
         ->join('users', 'comentarios.id_user', '=', 'users.id')
         ->select('comentarios.*', 'users.name')
+        ->orderBy('created_at', 'desc')
         ->get();
 
         return view('home', compact('comentarios'));
@@ -64,6 +61,10 @@ class ComentarioController extends Controller
     }
     public function destroy($id){
         $this->comentario->find($id)->delete();
+        return redirect()->route('comentarios.index');
+    }
+    public function desativar($id){
+        $this->comentario->find($id)->update(['ativo' => false]);
         return redirect()->route('comentarios.index');
     }
 }

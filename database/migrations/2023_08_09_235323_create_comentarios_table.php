@@ -14,7 +14,8 @@ return new class extends Migration
             $table->string('conteudo');
             $table->foreignId('id_user')->constrained('id')->on('users');
             $table->foreignId('id_comentario')->nullable()->constrained('id')->on('comentarios');
-            $table->integer('likes');
+            $table->integer('likes')->default(0);
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

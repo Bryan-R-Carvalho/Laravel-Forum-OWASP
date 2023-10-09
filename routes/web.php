@@ -6,17 +6,6 @@ use App\Http\Controllers\{ProfileController,
 use App\Models\{Comentario};
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/', function () {
     return view('home');
 });
@@ -43,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/', [ComentarioController::class, 'store'])->name('comentario.store');
     Route::get('/{id}', [ComentarioController::class, 'show'])->name('comentario.show');
     Route::delete('/{id}', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
+    Route::post('/{id}/like', [ComentarioController::class, 'like'])->name('comentario.like');
+    Route::post('/{id}/desativar', [ComentarioController::class, 'desativar'])->name('comentario.desativar');
     
 });
 

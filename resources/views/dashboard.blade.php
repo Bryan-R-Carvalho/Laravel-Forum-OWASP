@@ -57,10 +57,10 @@
                         @endphp
                         <h2 class="text-white mb-2">Sugestões de usuários para seguir</h2>
                         @foreach ($sugest as $sug)
-                        <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-xl max-w-xl">
+                        <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-2xl ">
                             <div class="text-white mb-2">{{$sug->name}}</div>
                             <small class="text-blue-400">{{$sug->email}}</small>
-                            <button class=" text-white">Seguir</button>
+                            <button class=" text-white ">Seguir</button>
                         </div>
                         @endforeach
                     </td>
@@ -68,6 +68,5 @@
             </table>
         </div>
     </div>
-</div>
 
 </x-app-layout>

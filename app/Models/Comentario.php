@@ -9,7 +9,7 @@ class Comentario extends Model
 {
     use HasFactory;
     protected $table = 'comentarios';
-    protected $fillable = ['conteudo','id_user','id_comentario','likes'];
+    protected $fillable = ['conteudo','id_user','id_comentario','likes','ativo'];
 
     public function user(){
         return $this->belongsTo(User::class, 'id_user');
