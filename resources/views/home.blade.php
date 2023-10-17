@@ -23,33 +23,24 @@
 
             <div>
                 @foreach ($comentarios as $comentario)
-                    @auth
-                        @if($comentario->ativo === true || $comentario->id_user === auth()->user()->id)
-                            <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
-                                <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
-                                <small class="text-blue-400">{{$comentario->name}} |</small>
-                                <small class="text-blue-400">{{$comentario->created_at}} |</small>
-                                <small class="text-blue-400" ><button >&#10084;</button> ( {{$comentario->likes}} ) |</small>
-                                <small class="text-blue-400"><button>Responder</button></small>
-                                @can('desativar-comentario')
-                                <form action="{{ route('comentario.desativar', $comentario->id) }}" method="POST">
-                                    @method('POST')
-                                    @csrf
-                                    <button type="submit" class="p-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md">Desativar</button>
-                                </form>
-                                @endcan
-                            </div>
-                        @endif
-                    @endauth
                     @if($comentario->ativo === true)
                         <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
-                                <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
-                                <small class="text-blue-400">{{$comentario->name}} |</small>
-                                <small class="text-blue-400">{{$comentario->created_at}} |</small>
-                                <small class="text-blue-400" ><button >&#10084;</button> ( {{$comentario->likes}} ) |</small>
+                            <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
+                            <small class="text-blue-400">{{$comentario->name}} |</small>
+                            <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
+                            <small class="text-blue-400" ><button >&#10084;</button> ( {{$comentario->likes}} ) |</small>
+                            @auth
+                                <small class="text-blue-400"><button>Responder</button></small>
+                            @endauth
+                            @can('desativar-comentario')
+                            <form action="{{ route('comentario.desativar', $comentario->id) }}" method="POST">
+                                @method('POST')
+                                @csrf
+                                <button type="submit" class="p-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md">Desativar</button>
+                            </form>
+                            @endcan
                         </div>
                     @endif
-                    
                 @endforeach
             </div>
         </div>
