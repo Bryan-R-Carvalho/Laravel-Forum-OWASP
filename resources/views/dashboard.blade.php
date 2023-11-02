@@ -11,22 +11,7 @@
             <table cellpadding="20">
                 <tr>
                     <!-- First Column -->
-                    <td valign="top">
-                        <h2 class="text-white mb-2">Seguindo</h2>
-                        @php
-                        $users = DB::table('users')
-                            ->select('users.name', 'users.email')
-                            ->join('seguidores', 'users.id', '=', 'seguidores.seguido_id')
-                            ->where('seguidores.seguidor_id', '=', Auth::user()->id)
-                            ->get();
-                        @endphp
-                        @foreach ($users as $user)
-                        <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-2xl">
-                            <div class="text-white mb-2">{{$user->name}}</div>
-                            <small class="text-blue-400">{{$user->email}}</small>
-                        </div>
-                        @endforeach
-                    </td>
+                    
                     <td valign="top">
                         <h2 class="text-white mb-2">Seguidores</h2>
                         @php
@@ -46,7 +31,7 @@
                     <td valign="top">
                         @php
                         $sugest = DB::table('users')
-                            ->select('users.name', 'users.email')
+                            ->select('users.id', 'users.name', 'users.email')
                             ->leftJoin('seguidores', function($join) {
                                 $join->on('users.id', '=', 'seguidores.seguidor_id')
                                     ->where('seguidores.seguidor_id', '=', Auth::user()->id);
@@ -58,9 +43,14 @@
                         <h2 class="text-white mb-2">Sugestões de usuários para seguir</h2>
                         @foreach ($sugest as $sug)
                         <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-2xl ">
-                            <div class="text-white mb-2">{{$sug->name}}</div>
-                            <small class="text-blue-400">{{$sug->email}}</small>
-                            <button class=" text-white ">Seguir</button>
+                            
+                            <form action="{{ route('seguir.store', ['id' => $sug->id])}}" method="POST" class="flex flex-col items-center">
+                                @method('POST')
+                                @csrf
+                                
+                                <div class="text-white mb-2">{{$sug->name}}</div>
+                                <small class="text-blue-400">{{$sug->email}}</small>
+                                <button type="submit" class=" text-white ">Seguir</button>
                         </div>
                         @endforeach
                     </td>

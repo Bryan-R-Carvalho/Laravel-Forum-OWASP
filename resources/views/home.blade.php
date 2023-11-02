@@ -30,13 +30,18 @@
                             <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
                             <small class="text-blue-400" ><button >&#10084;</button> ( {{$comentario->likes}} ) |</small>
                             @auth
-                                <small class="text-blue-400"><button>Responder</button></small>
+                                <!-- <small class="text-blue-400"><button>Responder</button></small> -->
+                                <a href="{{ route('comentario.show', $comentario->id) }}" class="text-blue-400">Responder</a>
+
                             @endauth
+
                             @can('desativar-comentario')
                             <form action="{{ route('comentario.desativar', $comentario->id) }}" method="POST">
                                 @method('POST')
                                 @csrf
-                                <button type="submit" class="p-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md">Desativar</button>
+                                <button type="submit" class="p-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md">
+                                    Desativar
+                                </button>
                             </form>
                             @endcan
                         </div>

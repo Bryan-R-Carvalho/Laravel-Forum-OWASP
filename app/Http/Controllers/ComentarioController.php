@@ -47,8 +47,8 @@ class ComentarioController extends Controller
        
         $this->comentario->create($request->all());
 
-        return redirect()->route('comentarios.index');
-    }
+        return back();
+    }   
 
     public function edit($id){
         $comentario = $this->comentario->find($id);
@@ -66,5 +66,24 @@ class ComentarioController extends Controller
     public function desativar($id){
         $this->comentario->find($id)->update(['ativo' => false]);
         return redirect()->route('comentarios.index');
+    }
+    public function like($id){
+        $comentario = $this->comentario->find($id);
+        $comentario->update(['likes' => $comentario->likes + 1]);
+        return redirect()->route('comentarios.index');
+    }
+    public function resposta(Request $request, $id){
+        //dd($request->all());
+        $user = auth()->user()->id;
+        $comentario = $this->comentario->find($id);
+        //dd($comentario->id);
+        $request->validate([
+            'conteudo' => 'required|max:120'
+        ]);
+        $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => $comentario->id]);
+       
+        $this->comentario->create($request->all());
+
+        return back();
     }
 }
