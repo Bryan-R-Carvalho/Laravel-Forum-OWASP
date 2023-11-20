@@ -26,16 +26,13 @@ class UserController extends Controller
 
     }
     public function seguir($id){
-        $user = auth()->user();
         $user = auth()->user()->id;
-       if(DB::table('seguidores')->where('seguidor_id', $user)->where('seguido_id', $id)->doesntExist()){
-        DB::table('seguidores')->insert([
-            'seguidor_id' => $user,
-            'seguido_id' => $id
-        ]);
-         }
-         
-
+        if(DB::table('seguidores')->where('seguidor_id', $user)->where('seguido_id', $id)->doesntExist()){
+            DB::table('seguidores')->insert([
+                'seguidor_id' => $user,
+                'seguido_id' => $id
+            ]);
+        }
         return back();
     }
 }

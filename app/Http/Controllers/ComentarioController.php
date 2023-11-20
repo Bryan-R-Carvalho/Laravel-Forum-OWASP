@@ -19,10 +19,10 @@ class ComentarioController extends Controller
 
     public function index(){
         $comentarios = DB::table('comentarios')
-        ->join('users', 'comentarios.id_user', '=', 'users.id')
-        ->select('comentarios.*', 'users.name')
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->join('users', 'comentarios.id_user', '=', 'users.id')
+            ->select('comentarios.*', 'users.name')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('home', compact('comentarios'));
     }
@@ -72,18 +72,18 @@ class ComentarioController extends Controller
         $comentario->update(['likes' => $comentario->likes + 1]);
         return redirect()->route('comentarios.index');
     }
-    public function resposta(Request $request, $id){
-        //dd($request->all());
-        $user = auth()->user()->id;
-        $comentario = $this->comentario->find($id);
-        //dd($comentario->id);
-        $request->validate([
-            'conteudo' => 'required|max:120'
-        ]);
-        $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => $comentario->id]);
+    // public function resposta(Request $request, $id){
+    //     //dd($request->all());
+    //     $user = auth()->user()->id;
+    //     $comentario = $this->comentario->find($id);
+    //     //dd($comentario->id);
+    //     $request->validate([
+    //         'conteudo' => 'required|max:120'
+    //     ]);
+    //     $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => $comentario->id]);
        
-        $this->comentario->create($request->all());
+    //     $this->comentario->create($request->all());
 
-        return back();
-    }
+    //     return back();
+    // }
 }

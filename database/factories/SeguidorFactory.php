@@ -14,6 +14,7 @@ class SeguidorFactory extends Factory
             'updated_at' => fake()->dateTime(),
             'seguidor_id' => fake()->randomDigit(),
             'seguido_id' => fake()->randomDigit(),
+            'aceitado' => fake()->boolean(),
         ];
     }
 }
