@@ -43,7 +43,7 @@ class ComentarioController extends Controller
         $request->validate([
             'conteudo' => 'required|max:120'
         ]);
-        $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => null]);
+        $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => null, 'users_like' => []]);
        
         $this->comentario->create($request->all());
 
@@ -67,11 +67,45 @@ class ComentarioController extends Controller
         $this->comentario->find($id)->update(['ativo' => false]);
         return redirect()->route('comentarios.index');
     }
+
     public function like($id){
         $comentario = $this->comentario->find($id);
-        $comentario->update(['likes' => $comentario->likes + 1]);
-        return redirect()->route('comentarios.index');
+        $users_like = $comentario->users_like;
+
+        $index = $this->binarySearch($users_like, auth()->user()->id);
+        
+        if($index === -1){
+            $comentario->update(['likes' => $comentario->likes + 1]);
+            $users_like[] = auth()->user()->id;
+
+        }else{
+            unset($users_like[$index]);
+            $comentario->update(['likes' => $comentario->likes - 1]);
+            $users_like = array_values($users_like);
+        }
+
+        $comentario->update(['users_like' => $users_like]);
+        return back();
     }
+
+    public function binarySearch($array, $target) {
+        $left = 0;
+        $right = count($array) - 1;
+        while ($left <= $right) {
+            $mid = floor(($left + $right) / 2);
+
+            if ($array[$mid] == $target) {
+                return $mid;
+            }
+            if ($array[$mid] < $target) {
+                $left = $mid + 1;
+            } else {
+                $right = $mid - 1;
+            }
+        }
+        return -1;
+    }
+       
     // public function resposta(Request $request, $id){
     //     //dd($request->all());
     //     $user = auth()->user()->id;
