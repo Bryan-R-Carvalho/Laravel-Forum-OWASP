@@ -70,7 +70,7 @@ class ComentarioController extends Controller
 
     public function like($id){
         $comentario = $this->comentario->find($id);
-        $users_like = $comentario->users_like;
+        $users_like = collect($comentario->users_like)->sort()->values()->toArray();
 
         $index = $this->binarySearch($users_like, auth()->user()->id);
         
