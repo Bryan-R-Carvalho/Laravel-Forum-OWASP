@@ -16,14 +16,8 @@ class ComentarioController extends Controller
     public function __construct(
         protected Comentario $comentario
     ){}
-
     public function index(){
-        $comentarios = DB::table('comentarios')
-            ->join('users', 'comentarios.id_user', '=', 'users.id')
-            ->select('comentarios.*', 'users.name')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
+        $comentarios =  Comentario::where('id_comentario', null)->orderBy('created_at', 'desc')->paginate(20);
         return view('home', compact('comentarios'));
     }
     public function show($id){

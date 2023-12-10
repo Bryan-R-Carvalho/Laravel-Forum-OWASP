@@ -55,7 +55,11 @@
                         </div>
                     @endif
                 @endforeach
+                <div class="d-flex justify-content-center mt-5">
+                    {{ $comentarios->links()}}
+                </div>
             </div>
+            
         </div>
     </div>
 @endsection
