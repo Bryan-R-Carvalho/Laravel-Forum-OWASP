@@ -17,10 +17,22 @@ class ComentarioController extends Controller
         protected Comentario $comentario
     ){}
     public function index(){
-        $comentarios =  Comentario::where('id_comentario', null)->orderBy('created_at', 'desc')->paginate(20);
+        //Eloquent ORM
+        //$comentarios = Comentario::where('id_comentario', null)->where('ativo', true)->orderBy('created_at', 'desc')->paginate(20);
+
+        //DB query builder
+        $comentarios = DB::table('comentarios')
+            ->join('users', 'comentarios.id_user', '=', 'users.id')
+            ->select('comentarios.*', 'users.name')
+            ->where('id_comentario', null)
+            ->where('ativo', true)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
         return view('home', compact('comentarios'));
     }
     public function show($id){
+        
         try{
             $comentario = $this->comentario->find($id);
         return view('comentarios.show', compact('comentario'));
@@ -29,9 +41,7 @@ class ComentarioController extends Controller
         }
         
     }
-    public function create(){
-        return view('comentarios.create');
-    }
+
     public function store(Request $request){
         $user = auth()->user()->id;
         $request->validate([
@@ -100,18 +110,20 @@ class ComentarioController extends Controller
         return -1;
     }
        
-    // public function resposta(Request $request, $id){
-    //     //dd($request->all());
-    //     $user = auth()->user()->id;
-    //     $comentario = $this->comentario->find($id);
-    //     //dd($comentario->id);
-    //     $request->validate([
-    //         'conteudo' => 'required|max:120'
-    //     ]);
-    //     $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => $comentario->id]);
+    public function responder(Request $request, $id){
+        $user = auth()->user()->id;
+        try{
+        $comentario = $this->comentario->find($id);
+        $request->validate([
+            'conteudo' => 'required|max:120'
+        ]);
+        $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => $comentario->id]);
        
-    //     $this->comentario->create($request->all());
+        $this->comentario->create($request->all());
 
-    //     return back();
-    // }
+        return back();
+        }catch(\Exception $e){
+            return json($e, 500);
+        }
+    }
 }

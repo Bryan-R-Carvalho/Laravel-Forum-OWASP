@@ -2,8 +2,7 @@
 
 use App\Http\Controllers\{ProfileController,
     ComentarioController,
-    SeguidoresController,
-    UserController};
+    SeguidoresController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
@@ -17,7 +16,6 @@ Route::get('/register', function () {
 Route::get('/', [ComentarioController::class, 'index'])->name('comentarios.index');
 
 Route::middleware('auth')->group(function () {
-    //Route::get('/dashboard', [UserController::class, 'seguidores'])->name('dashboard');
     Route::get('/dashboard',  [ SeguidoresController::class, 'seguidores'])->name('dashboard');
     Route::post('/dashboard/{id}', [SeguidoresController::class, 'store'])->name('seguir.store');
 
@@ -27,7 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/', [ComentarioController::class, 'store'])->name('comentario.store');
     Route::get('/{id}', [ComentarioController::class, 'show'])->name('comentario.show');
-    // Route::post('/{id}', [ComentarioController::class, 'resposta'])->name('comentario.resposta');
+    Route::post('/{id}/responder', [ComentarioController::class, 'responder'])->name('comentario.responder');
     Route::delete('/{id}', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
     Route::post('/{id}/like', [ComentarioController::class, 'like'])->name('comentario.like');
     Route::post('/{id}/desativar', [ComentarioController::class, 'desativar'])->name('comentario.desativar')->middleware('can:desativar,comentario');

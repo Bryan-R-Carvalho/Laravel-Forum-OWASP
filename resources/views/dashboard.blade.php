@@ -11,14 +11,6 @@
                     <!-- First Column -->
                     <td valign="top">
                         <h2 class="text-white mb-2">Seguidores</h2>
-                        <!-- @php
-                            $users = DB::table('users')
-                                ->select('users.name', 'users.email')
-                                ->join('seguidores', 'users.id', '=', 'seguidores.seguidor_id')
-                                ->where('seguidores.seguido_id', '=', Auth::user()->id)
-                                ->where('seguidores.aceitado', '=', true)
-                                ->get();
-                        @endphp -->
                         @foreach ($seguidores as $seguidores)
                             <div class=" bg-gray-800 p-5 mb-4 rounded-lg shadow-2xl">
                                 <div class="text-white mb-2">{{$seguidores->name}}</div>
@@ -36,6 +28,7 @@
                                 })
                                 ->whereNull('seguidores.id')
                                 ->where('users.id', '!=', Auth::user()->id)  // Não mostrar o usuário atual
+                                ->where('users.role', '!=', 'admin') // Não mostrar o usuário admin
                                 ->orderBy('users.name')
                                 ->paginate(15);
                         @endphp

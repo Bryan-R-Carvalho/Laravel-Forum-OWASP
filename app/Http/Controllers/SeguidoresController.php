@@ -17,7 +17,9 @@ class SeguidoresController extends Controller
     public function seguidores()
     {
         $user = auth()->user()->id;
-        $seguidores = Seguidor::where('seguido_id', $user);
+        $seguidores = Seguidor::where('seguidor_id', $user)
+            ->join('users', 'seguidores.seguido_id', '=', 'users.id')
+            ->paginate(10);
         
         return view('dashboard', compact('seguidores'));
 
