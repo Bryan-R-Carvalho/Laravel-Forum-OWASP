@@ -9,11 +9,15 @@ class ComentarioFactory extends Factory
 
     public function definition(): array
     {
+
         return [
-            'conteudo' => fake()->realText(),
-            'id_user' => \App\Models\User::factory(),
-            'id_comentario' => \App\Models\Comentario::factory(),
-            'users_like' => null
+            'conteudo' => $this->faker->realText(120),
+            'id_user' => $this->faker->numberBetween(1, 30),
+            'id_comentario' => null,
+            'likes' => 0,
+            'users_like' => null,
+            'ativo' => true,
         ];
+
     }
 }
