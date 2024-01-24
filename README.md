@@ -1,4 +1,6 @@
-TCC - Construção de Fórum Web com Laravel e OWASP Top 10
+
+# TCC - Construção de Fórum Web com Laravel e OWASP Top 10
+
 Descrição do Projeto
 Este repositório contém o Trabalho de Conclusão de Curso (TCC) intitulado "Construção de Fórum Web com Laravel e OWASP Top 10". O objetivo principal deste projeto é desenvolver um fórum online utilizando o framework Laravel, enquanto aborda e implementa as melhores práticas de segurança preconizadas pelo OWASP Top 10.
 
@@ -8,13 +10,14 @@ Documentação: A documentação do TCC, incluindo a introdução, justificativa
 Código-fonte: O código-fonte do fórum web construído usando o Laravel, seguindo as boas práticas de desenvolvimento e as diretrizes de segurança do OWASP Top 10.
 
 Tecnologias Utilizadas
-Laravel 8: Um poderoso framework PHP que proporciona uma estrutura elegante para o desenvolvimento de aplicativos web.
+Laravel 10: Um poderoso framework PHP que proporciona uma estrutura elegante para o desenvolvimento de aplicativos web.
 
 OWASP Top 10: As principais ameaças à segurança em aplicações web, abordadas e mitigadas ao longo do projeto.
 
 Estrutura do Projeto
 markdown
-Copy code
+```
+
 - **documentation**
   - introducao.md
   - justificativa.md
@@ -39,40 +42,42 @@ Copy code
 - .gitignore
 - composer.json
 - ...
+
+```
 Como Executar
 Clone este repositório:
 
-bash
-Copy code
+```
 git clone https://github.com/seu-usuario/tcc-forum-laravel-owasp.git
+
+```
 Instale as dependências do Laravel:
 
-bash
-Copy code
+```
 composer install
+```
 Configure o arquivo .env baseado no .env.example:
 
-bash
-Copy code
+```
 cp .env.example .env
+
+```
 Certifique-se de configurar corretamente o banco de dados.
 
 Execute as migrações para criar as tabelas do banco de dados:
-
-bash
-Copy code
+```
 php artisan migrate
+
+```
 Inicie o servidor de desenvolvimento:
-
-bash
-Copy code
+```
 php artisan serve
-Acesse o fórum no navegador:
 
+```
+Acesse o fórum no navegador:
+```
 http://localhost:8000
 
-Contribuições
+```
+## Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
-
-Licença
-Este projeto está licenciado sob a licença MIT, o que significa que você pode utilizá-lo livremente em seus próprios projetos.
