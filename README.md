@@ -14,8 +14,8 @@ Laravel 10: Um poderoso framework PHP que proporciona uma estrutura elegante par
 
 OWASP Top 10: As principais ameaças à segurança em aplicações web, abordadas e mitigadas ao longo do projeto.
 
-Estrutura do Projeto
-markdown
+##Estrutura do Projeto:
+
 ```
 
 - **documentation**
@@ -42,36 +42,35 @@ markdown
 - .gitignore
 - composer.json
 - ...
+
 ```
-Como Executar
-Clone este repositório:
+## Como Executar
+**1.Clone este repositório:**
 
 ```
 git clone https://github.com/seu-usuario/tcc-forum-laravel-owasp.git
 ```
-Instale as dependências do Laravel:
+**2.Instale as dependências do Laravel:**
 
 ```
 composer install
 ```
-Configure o arquivo .env baseado no .env.example:
+**3.Configure o arquivo .env baseado no .env.example:**
 
 ```
 cp .env.example .env
 ```
 Certifique-se de configurar corretamente o banco de dados.
 
-Execute as migrações para criar as tabelas do banco de dados:
+**4.Execute as migrações para criar as tabelas do banco de dados:**
 ```
 php artisan migrate
 ```
-Inicie o servidor de desenvolvimento:
+**5.Inicie o servidor de desenvolvimento:**
 ```
 php artisan serve
 ```
 Acesse o fórum no navegador:
-```
-http://localhost:8000
-```
+ http://localhost:8000
 ## Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
