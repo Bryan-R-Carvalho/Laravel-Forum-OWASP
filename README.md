@@ -42,14 +42,12 @@ markdown
 - .gitignore
 - composer.json
 - ...
-
 ```
 Como Executar
 Clone este repositório:
 
 ```
 git clone https://github.com/seu-usuario/tcc-forum-laravel-owasp.git
-
 ```
 Instale as dependências do Laravel:
 
@@ -60,24 +58,20 @@ Configure o arquivo .env baseado no .env.example:
 
 ```
 cp .env.example .env
-
 ```
 Certifique-se de configurar corretamente o banco de dados.
 
 Execute as migrações para criar as tabelas do banco de dados:
 ```
 php artisan migrate
-
 ```
 Inicie o servidor de desenvolvimento:
 ```
 php artisan serve
-
 ```
 Acesse o fórum no navegador:
 ```
 http://localhost:8000
-
 ```
 ## Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
