@@ -66,10 +66,19 @@ Certifique-se de configurar corretamente o banco de dados.
 ```
 php artisan migrate
 ```
-**5.Inicie o servidor de desenvolvimento:**
+**5.Instale os pacotes json:**
+```
+npm install
+```
+**6.Build o vite:**
+```
+npm run build
+```
+**7.Inicie o servidor de desenvolvimento:**
 ```
 php artisan serve
 ```
+
 Acesse o fórum no navegador:
  http://localhost:8000
 ## Contribuições
