@@ -2,17 +2,21 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\{
+    User,
+    Comentario,
+    Seguidor
+};
 
 class DatabaseSeeder extends Seeder
 {
 
     public function run(): void
     {
-       \App\Models\User::factory(10)->create();
-        \App\Models\Comentario::factory(10)->create();
-        //\App\Models\Seguidor::factory(10)->create();
+      User::factory(10)->create();
+      Comentario::factory(10)->create();
+      //Seguidor::factory(10)->create();
         
     }
 }

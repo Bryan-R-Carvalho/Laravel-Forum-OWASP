@@ -3,17 +3,24 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\{
+    User,
+    Comentario
+    };
 
 class ComentarioFactory extends Factory
 {
+    protected $model = Comentario::class;
 
     public function definition(): array
     {
+        $usuarios = User::pluck('id')->toArray();
+        $comentarios = Comentario::pluck('id')->toArray();
         return [
-            'conteudo' => fake()->realText(),
-            'id_user' => \App\Models\User::factory(),
-            'id_comentario' => \App\Models\Comentario::factory(),
-            'users_like' => null
+            'conteudo' => $this->faker->realText(),
+            'user_id' => $this->faker->randomElement($usuarios),
+            'comentario_id' => $this->faker->randomElement($comentarios), 
+            'ativo' => true,
         ];
     }
 }
