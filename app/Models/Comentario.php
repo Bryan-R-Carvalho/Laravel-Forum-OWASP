@@ -9,20 +9,26 @@ class Comentario extends Model
 {
     use HasFactory;
     protected $table = 'comentarios';
-    protected $fillable = ['conteudo','id_user','id_comentario','likes', 'users_like', 'ativo'];
+    protected $fillable = [
+        'conteudo',
+        'user_id',
+        'comentario_id',
+        'ativo'
+    ];
 
     protected $casts = [
         'users_like' => 'array'
     ];
     
-    public function user(){
-        return $this->belongsTo(User::class, 'id_user');
+    public function autor(){
+        return $this->belongsTo(User::class, 'user_id');
     }
-    public function post(){
-        return $this->belongsTo(Comentario::class, 'id');
-    }
+
     public function resposta(){
         return $this->hasMany(Comentario::class, 'id');
     }
     
+    public function likes(){
+        return $this->belongsToMany(User::class, 'comentarios_like');
+    }
 }
