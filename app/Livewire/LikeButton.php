@@ -11,10 +11,12 @@ class LikeButton extends Component
 {  
     public $comentario;
     public $likes;
+    public $hasLiked;
 
     public function mount($comentario){
         $this->comentario = $comentario;
         $this->likes = $this->countLikes($comentario->id);
+        $this->hasLiked = $this->hasLiked($comentario->id);
     }
     
 
@@ -22,30 +24,28 @@ class LikeButton extends Component
         $comentario = Comentario::findOrFail($id);
         $user_id = auth()->user()->id;
 
-        $hasLiked = DB::table('comentarios_like')
-            ->where('comentario_id', $id)
-            ->where('user_id', $user_id)
-            ->exists();
-            
+        $hasLiked = $this->hasLiked($id);
+           
         if (!$hasLiked) {
             $comentario->likes()->attach($user_id);
         } else {
             $comentario->likes()->detach($user_id);
         }
 
-        $this->likes = $this->countLikes($id);
+            $this->hasLiked = $this->hasLiked($id);
+            $this->likes = $this->countLikes($id);
         }
     
-    public function hasLiked($id){
-        $comentario = $this->comentario->find($id);
+    public function hasLiked($id):bool{
         $user_id = auth()->user()->id;
-        $hasLiked = $comentario->likes()->where('user_id', $user_id)->exists();
-        return $hasLiked;
-    }
-    public function usersLike($id){
-        $comentario = $this->comentario->find($id);
-        $users_like = $comentario->likes()->pluck('user_id');
-        return $users_like;
+        $hasLiked = DB::table('comentarios_like')
+            ->where('comentario_id', $id)
+            ->where('user_id', $user_id)
+            ->exists();
+        if($hasLiked){
+            return true;
+        }
+        return false;
     }
 
     public function countLikes($id){
