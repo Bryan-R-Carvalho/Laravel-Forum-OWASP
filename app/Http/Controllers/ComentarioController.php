@@ -18,13 +18,13 @@ class ComentarioController extends Controller
     ){}
     public function index(){
         //Eloquent ORM
-        //$comentarios = Comentario::where('id_comentario', null)->where('ativo', true)->orderBy('created_at', 'desc')->paginate(20);
+        //$comentarios = Comentario::where('comentario_id', null)->where('ativo', true)->orderBy('created_at', 'desc')->paginate(20);
 
         //DB query builder
         $comentarios = DB::table('comentarios')
             ->join('users', 'comentarios.user_id', '=', 'users.id')
             ->select('comentarios.*', 'users.name')
-            ->where('id_comentario', null)
+            ->where('comentario_id', null)
             ->where('ativo', true)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
