@@ -32,16 +32,8 @@
                             <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
                             <small class="text-blue-400">{{$comentario->name}} |</small>
                             <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
-                            @auth
-                                <form action="{{ route('comentario.like', $comentario->id) }}" method="POST">
-                                    @method('POST')
-                                    @csrf
-                                    <small class="text-blue-400" ><button type="submit" >&#10084;</button> ( {{$comentario->likes}} ) |</small>
-                                </form>
-                                <a href="{{ route('comentario.show', $comentario->id) }}" class="text-blue-400">Responder</a>
-                            @else
-                                <small class="text-blue-400" >&#10084; ( {{$comentario->likes}} )</small>
-                            @endauth
+
+                            <livewire:like-button :key="$comentario->id" :$comentario />
 
                             @can('desativar-comentario')
                                 <form action="{{ route('comentario.desativar', $comentario->id) }}" method="POST">

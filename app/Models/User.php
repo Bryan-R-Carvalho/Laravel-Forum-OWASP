@@ -12,12 +12,14 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = [
+    protected $fillable = 
+    [
         'name',
         'email',
         'password',
         'role',
     ];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -27,4 +29,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function comentarios(){
+        return $this->hasMany(Comentario::class, 'id_user');
+    }
+    public function likes(){
+        return $this->belongsToMany(Comentario::class, 'comentarios_like')->withTimestamps();
+    }
 }

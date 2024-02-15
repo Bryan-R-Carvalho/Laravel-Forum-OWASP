@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\{
+    User,
+    Comentario
+};
 
 return new class extends Migration
 {
@@ -12,10 +16,8 @@ return new class extends Migration
         Schema::create('comentarios', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('conteudo');
-            $table->foreignId('id_user')->constrained('id')->on('users');
-            $table->foreignId('id_comentario')->nullable()->constrained('id')->on('comentarios');
-            $table->integer('likes')->default(0);
-            $table->json('users_like')->nullable();
+            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(Comentario::class)->nullable()->constrained();
             $table->boolean('ativo')->default(true);
             $table->timestamps();
         });

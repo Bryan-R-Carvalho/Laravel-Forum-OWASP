@@ -22,7 +22,7 @@ class ComentarioController extends Controller
 
         //DB query builder
         $comentarios = DB::table('comentarios')
-            ->join('users', 'comentarios.id_user', '=', 'users.id')
+            ->join('users', 'comentarios.user_id', '=', 'users.id')
             ->select('comentarios.*', 'users.name')
             ->where('id_comentario', null)
             ->where('ativo', true)
@@ -47,7 +47,7 @@ class ComentarioController extends Controller
         $request->validate([
             'conteudo' => 'required|max:120'
         ]);
-        $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => null, 'users_like' => []]);
+        $request->merge(['user_id' => $user, 'ativo' => true, 'comentario_id' => null]);
        
         $this->comentario->create($request->all());
 
@@ -71,44 +71,6 @@ class ComentarioController extends Controller
         $this->comentario->find($id)->update(['ativo' => false]);
         return redirect()->route('comentarios.index');
     }
-
-    public function like($id){
-        $comentario = $this->comentario->find($id);
-        $users_like = collect($comentario->users_like)->sort()->values()->toArray();
-
-        $index = $this->binarySearch($users_like, auth()->user()->id);
-        
-        if($index === -1){
-            $comentario->update(['likes' => $comentario->likes + 1]);
-            $users_like[] = auth()->user()->id;
-
-        }else{
-            unset($users_like[$index]);
-            $comentario->update(['likes' => $comentario->likes - 1]);
-            $users_like = array_values($users_like);
-        }
-
-        $comentario->update(['users_like' => $users_like]);
-        return back();
-    }
-
-    public function binarySearch($array, $target) {
-        $left = 0;
-        $right = count($array) - 1;
-        while ($left <= $right) {
-            $mid = floor(($left + $right) / 2);
-
-            if ($array[$mid] == $target) {
-                return $mid;
-            }
-            if ($array[$mid] < $target) {
-                $left = $mid + 1;
-            } else {
-                $right = $mid - 1;
-            }
-        }
-        return -1;
-    }
        
     public function responder(Request $request, $id){
         $user = auth()->user()->id;
@@ -117,7 +79,7 @@ class ComentarioController extends Controller
         $request->validate([
             'conteudo' => 'required|max:120'
         ]);
-        $request->merge(['id_user' => $user,'likes' => 0, 'id_comentario' => $comentario->id]);
+        $request->merge(['user_id' => $user, 'comentario_id' => $comentario->id]);
        
         $this->comentario->create($request->all());
 
@@ -126,4 +88,5 @@ class ComentarioController extends Controller
             return json($e, 500);
         }
     }
+
 }

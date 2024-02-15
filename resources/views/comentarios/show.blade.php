@@ -1,5 +1,5 @@
 @extends('template.layout')
-@section('title', 'resposta')
+@section('title', 'Twyter')
 @section('body')
     <div class="bg-gray-900 min-h-screen p-6 pt-16">
         <div class="grid grid-cols-3 gap-8">
@@ -25,10 +25,11 @@
                 <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
                     <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
                     <small class="text-blue-400">{{$comentario->name}} |</small>
-                    <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }}|</small>
-                    <small class="text-blue-400" ><button >&#10084;</button> ( {{$comentario->likes}} ) |</small>
+                    <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
+                    <livewire:like-button :key="$comentario->id" :$comentario />
+
                 </div>
-                @php $respostas = DB::table('comentarios')->where('id_comentario', $comentario->id)->get(); @endphp
+                @php $respostas = DB::table('comentarios')->where('comentario_id', $comentario->id)->get(); @endphp
                 <div class="pl-5">
                     @foreach($respostas as $resposta)
                     <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
