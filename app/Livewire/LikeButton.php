@@ -37,6 +37,9 @@ class LikeButton extends Component
         }
     
     public function hasLiked($id):bool{
+        if(!auth()->check()){
+            return false;
+        }
         $user_id = auth()->user()->id;
         $hasLiked = DB::table('comentarios_like')
             ->where('comentario_id', $id)
