@@ -6,34 +6,34 @@ use Livewire\Component;
 use App\Models\Comentario;
 use Illuminate\Support\Facades\DB;
 
-class LikeButton extends Component
-{  
-    public $comentario;
+class RespostaLike extends Component
+{
+    public $resposta;
     public $likes;
     public $hasLiked;
 
-    public function mount($comentario){
-        $this->comentario = $comentario;
-        $this->likes = $this->countLikes($comentario->id);
-        $this->hasLiked = $this->hasLiked($comentario->id);
+    public function mount($resposta){
+        $this->resposta = $resposta;
+        $this->likes = $this->countLikes($resposta->id);
+        $this->hasLiked = $this->hasLiked($resposta->id);
     }
     
     public function like($id):void{
-        $comentario = Comentario::findOrFail($id);
+        $resposta = Comentario::findOrFail($id);
         $user_id = auth()->user()->id;
 
         $hasLiked = $this->hasLiked($id);
            
         if (!$hasLiked) {
-            $comentario->likes()->attach($user_id);
+            $resposta->likes()->attach($user_id);
         } else {
-            $comentario->likes()->detach($user_id);
+            $resposta->likes()->detach($user_id);
         }
 
             $this->hasLiked = $this->hasLiked($id);
             $this->likes = $this->countLikes($id);
     }
-    
+
     public function hasLiked($id):bool{
         if(!auth()->check()){
             return false;
@@ -56,9 +56,8 @@ class LikeButton extends Component
         return $users_like;
 
     }
-
     public function render()
     {
-        return view('livewire.like-button');
+        return view('livewire.resposta-like');
     }
 }
