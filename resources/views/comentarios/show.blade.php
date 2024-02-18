@@ -29,7 +29,6 @@
                     <livewire:like-button :key="$comentario->id" :$comentario />
 
                 </div>
-                {{-- @php $respostas = DB::table('comentarios')->join('respostas', 'comentarios.id', '=', 'respostas.comentario_id')->where('comentarios.id', '=', $comentario->id)->get(); @endphp --}}
                 <div class="pl-5">
                     @foreach($respostas as $resposta)
                         @if($comentario->ativo === true)
