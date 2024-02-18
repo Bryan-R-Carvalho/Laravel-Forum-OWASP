@@ -32,13 +32,22 @@ class ComentarioController extends Controller
         return view('home', compact('comentarios'));
     }
     public function show($id){
+        $comentario = DB::table('comentarios')
+            ->join('users', 'comentarios.user_id', '=', 'users.id')
+            ->select('comentarios.*', 'users.name')
+            ->where('comentario_id', null)
+            ->where('comentarios.id', $id)
+            ->first();
         
-        try{
-            $comentario = $this->comentario->find($id);
-        return view('comentarios.show', compact('comentario'));
-        }catch(\Exception $e){
-            return json($e, 500);
-        }
+        $respostas = DB::table('comentarios')
+            ->join('users', 'comentarios.user_id', '=', 'users.id')
+            ->select('comentarios.*', 'users.name')
+            ->where('comentario_id', $id)
+            ->where('ativo', true)
+            ->orderBy('created_at', 'asc') // 'asc' ou 'desc
+            ->get();
+
+        return view('comentarios.show', compact('comentario', 'respostas'));
         
     }
 
@@ -71,22 +80,28 @@ class ComentarioController extends Controller
         $this->comentario->find($id)->update(['ativo' => false]);
         return redirect()->route('comentarios.index');
     }
-       
+
     public function responder(Request $request, $id){
-        $user = auth()->user()->id;
-        try{
-        $comentario = $this->comentario->find($id);
+        // Validar os dados do formulário
         $request->validate([
             'conteudo' => 'required|max:120'
         ]);
-        $request->merge(['user_id' => $user, 'comentario_id' => $comentario->id]);
-       
-        $this->comentario->create($request->all());
 
+        // Obter o ID do usuário autenticado
+        $user_id = auth()->id();
+
+        // Criar o comentário
+        $comentario = Comentario::create([
+            'conteudo' => $request->input('conteudo'),
+            'user_id' => $user_id,
+            'ativo' => true,
+            'comentario_id' => $id
+        ]);
+
+        // Retornar à página anterior com uma mensagem de sucesso
         return back();
-        }catch(\Exception $e){
-            return json($e, 500);
-        }
     }
+
+    
 
 }

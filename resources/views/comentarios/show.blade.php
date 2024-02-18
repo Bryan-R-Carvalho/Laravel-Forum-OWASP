@@ -1,12 +1,12 @@
 @extends('template.layout')
-@section('title', 'Twyter')
+@section('title', 'Twytter')
 @section('body')
     <div class="bg-gray-900 min-h-screen p-6 pt-16">
         <div class="grid grid-cols-3 gap-8">
             <div>
                 <div class="bg-gray-800 p-5 rounded-lg shadow-lg col-span-1">
                     @auth
-                        <form action="{{ route('comentario.responder', [$comentario->id]) }}" method="POST" class="flex flex-col items-center">
+                        <form action="{{ route('comentario.responder', $comentario->id) }}" method="POST" class="flex flex-col items-center">
                             @method('POST')
                             @csrf
                             <div>
@@ -24,19 +24,24 @@
             <div>
                 <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
                     <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
-                    <small class="text-blue-400">{{$comentario->name}} |</small>
+                    <small class="text-blue-400">{{ $comentario->name }} |</small>
                     <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
                     <livewire:like-button :key="$comentario->id" :$comentario />
 
                 </div>
-                @php $respostas = DB::table('comentarios')->where('comentario_id', $comentario->id)->get(); @endphp
+                {{-- @php $respostas = DB::table('comentarios')->join('respostas', 'comentarios.id', '=', 'respostas.comentario_id')->where('comentarios.id', '=', $comentario->id)->get(); @endphp --}}
                 <div class="pl-5">
                     @foreach($respostas as $resposta)
-                    <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
-                        <div class="text-white mb-2"> {{$resposta->conteudo}}</div>
-                        <small class="text-blue-400">{{ \Carbon\Carbon::parse($resposta->created_at)->format('d/m/Y H:i') }} |</small>
-                        <small class="text-blue-400" ><button >&#10084;</button> ( {{$resposta->likes}} ) |</small>
-                    </div>
+                        @if($comentario->ativo === true)
+
+                            <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
+
+                                <div class="text-white mb-2"> {{$resposta->conteudo}}</div>
+                                <small class="text-blue-400">{{ $resposta->name }} |</small>
+                                <small class="text-blue-400">{{ \Carbon\Carbon::parse($resposta->created_at)->format('d/m/Y H:i') }}</small>
+                                <livewire:resposta-like :key="$resposta->id" :$resposta />
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>

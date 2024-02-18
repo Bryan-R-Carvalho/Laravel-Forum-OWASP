@@ -23,16 +23,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/', [ComentarioController::class, 'store'])->name('comentario.store');
-    Route::get('/{id}', [ComentarioController::class, 'show'])->name('comentario.show');
-  
-    Route::post('/{id}', [ComentarioController::class, 'resposta'])->name('comentario.resposta');
-    Route::post('/{id}/responder', [ComentarioController::class, 'responder'])->name('comentario.responder');
-  
-    Route::delete('/{id}', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
-    Route::post('/{id}/like', [ComentarioController::class, 'like'])->name('comentario.like');
-    Route::post('/{id}/desativar', [ComentarioController::class, 'desativar'])->name('comentario.desativar')->middleware('can:desativar,comentario');
-    
+    Route::prefix('comentario')->group(function(){
+
+        Route::post('/', [ComentarioController::class, 'store'])->name('comentario.store');
+        Route::get('/{id}', [ComentarioController::class, 'show'])->name('comentario.show');
+        Route::post('/{id}/responder', [ComentarioController::class, 'responder'])->name('comentario.responder');
+        Route::get('/{id}/edit', [ComentarioController::class, 'edit'])->name('comentario.edit');
+        Route::put('/{id}', [ComentarioController::class, 'update'])->name('comentario.update');
+        Route::post('/{id}/desativar', [ComentarioController::class, 'desativar'])->name('comentario.desativar')->middleware('can:desativar,comentario');
+
+        Route::delete('/{id}', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
+    });
+        
 });
 
 require __DIR__.'/auth.php';
