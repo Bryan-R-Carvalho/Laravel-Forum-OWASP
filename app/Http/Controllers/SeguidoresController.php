@@ -7,6 +7,7 @@ use App\Models\{
     User,
     Seguidor
 };
+use Illuminate\Support\Facades\Auth;
 
 class SeguidoresController extends Controller
 {
@@ -14,33 +15,64 @@ class SeguidoresController extends Controller
         protected User $user,
         protected Seguidor $seguidor
     ){}
-    public function seguidores()
+
+    public function index()
     {
-        $user = auth()->user()->id;
-        $seguidores = Seguidor::where('seguidor_id', $user)
-            ->join('users', 'seguidores.seguido_id', '=', 'users.id')
-            ->paginate(10);
-        
-        return view('dashboard', compact('seguidores'));
+        $user = Auth::user()->id;
+
+        // $seguidores = $this->getSeguidores($user);
+        // $sugestoes = $this->getSugestoes($user);
+
+        //$seguidores recebe toos os usuarios que seguem o usuario logado
+        $seguidores = User::where('id', '!=', Auth :: user()->id)
+            ->where('role', '!=', 'admin')
+            ->whereHas('seguidores', function($q) use ($user){
+                $q->where('user1_id', $user)->where('aceito', true)->orWhere('user2_id', $user)->where('aceito', true);
+            })
+            ->orderBy('name')
+            ->paginate(20);
+
+            $sugestoes = User::whereDoesntHave('seguidores', function($query) use ($user) {
+                $query->where('aceito', true)
+                      ->where(function($query) use ($user) {
+                          $query->where('user1_id', $user)
+                                ->orWhere('user2_id', $user);
+                      });
+            })
+            ->where('id', '!=', $user)
+            ->where('role', '!=', 'admin')
+            ->orderBy('name')
+            ->paginate(20);
+    
+
+        return view('dashboard', compact('seguidores', 'sugestoes'));
 
     }
+
+
     public function store($id){
-        $user = auth()->user()->id;
-        $seguidorExistente = $this->seguidor
-        ->where('seguidor_id', $user)
-        ->where('seguido_id', $id)
-        ->first();
+        $user = Auth::user()->id;
 
-    if($seguidorExistente){
-        $seguidorExistente->update(['aceitado' => true]);
+        $a1 = DB::table('seguidores')->where('user1_id', $user)->where('user2_id', $id)->exists();
+        $a2 = DB::table('seguidores')->where('user1_id', $id)->where('user2_id', $user)->exists();
+        if(!$a1 && !$a2){
+            try {
+                // Tentativa de inserção na tabela
+                DB::table('seguidores')->insert([
+                    'user1_id' => $user,
+                    'user2_id' => $id
+                ]);
+            } catch (\Exception $e) {
 
-    }else{
-        $this->seguidor->create([
-            'seguidor_id' => $user,
-            'seguido_id' => $id,
-            'aceitado' => false
-        ]);
-    }
+                // Caso ocorra algum erro, retorna para a página anterior
+                return back();
+            }
+        }else if($a1 && !$a2){
+            DB::table('seguidores')->where('user1_id', $user)->where('user2_id', $id)->update(['aceito' => true]);
+        }else if(!$a1 && $a2){
+            DB::table('seguidores')->where('user1_id', $id)->where('user2_id', $user)->update(['aceito' => true]);
+        }
         return back();
     }
-}
+}     
+            
