@@ -11,29 +11,17 @@
                     <!-- First Column -->
                     <td valign="top">
                         <h2 class="text-white mb-2">Seguidores</h2>
-                        @foreach ($seguidores as $seguidores)
+                        @foreach ($seguidores as $seguidor)
                             <div class=" bg-gray-800 p-5 mb-4 rounded-lg shadow-2xl">
-                                <div class="text-white mb-2">{{$seguidores->name}}</div>
-                                <small class="text-blue-400">{{$seguidores->email}}</small>
+                                <div class="text-white mb-2">{{$seguidor->name}}</div>
+                                <small class="text-blue-400">{{$seguidor->email}}</small>
                             </div>
                         @endforeach
                     </td>
                     <td valign="top">
-                        @php
-                            $sugest = DB::table('users')
-                                ->select('users.id', 'users.name', 'users.email')
-                                ->leftJoin('seguidores', function($join) {
-                                    $join->on('users.id', '=', 'seguidores.seguidor_id')
-                                        ->where('seguidores.seguidor_id', '=', Auth::user()->id);
-                                })
-                                ->whereNull('seguidores.id')
-                                ->where('users.id', '!=', Auth::user()->id)  // Não mostrar o usuário atual
-                                ->where('users.role', '!=', 'admin') // Não mostrar o usuário admin
-                                ->orderBy('users.name')
-                                ->paginate(15);
-                        @endphp
+
                         <h2 class="text-white mb-2">Sugestões de usuários para seguir</h2>
-                        @foreach ($sugest as $sug)
+                        @foreach ($sugestoes as $sug)
                             <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-2xl ">
                                 <form action="{{ route('seguir.store', $sug->id)}}" method="POST" class="flex flex-col items-center">
                                     @csrf
@@ -42,7 +30,7 @@
                                     <input type="hidden" name="id" value="{{$sug->id}}">
                                     <div class="text-white mb-2">{{$sug->name}}</div>
                                     <small class="text-blue-400">{{$sug->email}}</small>
-                                    <button type="submit" class="text-white ">Seguir</button>
+                                    <button type="submit" class="text-white hover:text-blue-400 mt-2">Seguir</button>
                                 </form>
                             </div>
                         @endforeach
@@ -50,7 +38,7 @@
                 </tr>
             </table>
             <div class="d-flex justify-content-center mt-5">
-                {{ $sugest->links()}}
+                {{ $sugestoes->links()}}
             </div>
         </div>
     </div>

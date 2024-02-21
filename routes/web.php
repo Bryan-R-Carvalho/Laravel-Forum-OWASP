@@ -16,7 +16,7 @@ Route::get('/register', function () {
 Route::get('/', [ComentarioController::class, 'index'])->name('comentarios.index');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard',  [ SeguidoresController::class, 'seguidores'])->name('dashboard');
+    Route::get('/dashboard',  [ SeguidoresController::class, 'index'])->name('dashboard');
     Route::post('/dashboard/{id}', [SeguidoresController::class, 'store'])->name('seguir.store');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

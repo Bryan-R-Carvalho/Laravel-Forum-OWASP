@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Comentario::class);
             $table->foreignIdFor(User::class);
-            $table->timestamps();
         });
     }
 
@@ -25,4 +24,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('comentarios_like');
     }
+    public $timestamps = false;
 };

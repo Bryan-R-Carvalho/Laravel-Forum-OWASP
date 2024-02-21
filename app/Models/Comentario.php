@@ -12,15 +12,16 @@ class Comentario extends Model
     protected $fillable = [
         'conteudo',
         'user_id',
+        'ativo',
         'comentario_id',
-        'ativo'
+        'likes'
     ];
 
     protected $casts = [
         'users_like' => 'array'
     ];
     
-    public function autor(){
+    public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
 

@@ -6,19 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('seguidores', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('seguidor_id');
-            $table->unsignedBigInteger('seguido_id');
-            $table->foreign('seguidor_id')->references('id')->on('users');
-            $table->foreign('seguido_id')->references('id')->on('users');
-            $table->unique(['seguidor_id', 'seguido_id']);
-            $table->boolean('aceitado')->default(false);
+            $table->unsignedBigInteger('user1_id');
+            $table->unsignedBigInteger('user2_id');
+            $table->foreign('user1_id')->references('id')->on('users');
+            $table->foreign('user2_id')->references('id')->on('users');           
+            $table->boolean('aceito')->default(false);
             $table->timestamps();
         });
     }
