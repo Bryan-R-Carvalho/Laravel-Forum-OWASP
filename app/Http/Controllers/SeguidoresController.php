@@ -20,9 +20,6 @@ class SeguidoresController extends Controller
     {
         $user = Auth::user()->id;
 
-        // $seguidores = $this->getSeguidores($user);
-        // $sugestoes = $this->getSugestoes($user);
-
         //$seguidores recebe toos os usuarios que seguem o usuario logado
         $seguidores = User::where('id', '!=', Auth :: user()->id)
             ->where('role', '!=', 'admin')
@@ -53,8 +50,9 @@ class SeguidoresController extends Controller
     public function store($id){
         $user = Auth::user()->id;
 
-        $a1 = DB::table('seguidores')->where('user1_id', $user)->where('user2_id', $id)->exists();
-        $a2 = DB::table('seguidores')->where('user1_id', $id)->where('user2_id', $user)->exists();
+        $a1 = self::getSeguidores($user, $id);
+        $a2 = self::getSeguidores($id, $user);
+
         if(!$a1 && !$a2){
             try {
                 // Tentativa de inserção na tabela
@@ -73,6 +71,46 @@ class SeguidoresController extends Controller
             DB::table('seguidores')->where('user1_id', $id)->where('user2_id', $user)->update(['aceito' => true]);
         }
         return back();
+    }
+    public function search($id){
+        $user = Auth::user()->id;
+        $a1 = self::getSeguidores($user, $id);
+        $a2 = self::getSeguidores($id, $user);
+
+        if(!$a1 && !$a2){
+            try {
+                // Tentativa de inserção na tabela
+                DB::table('seguidores')->insert([
+                    'user1_id' => $user,
+                    'user2_id' => $id
+                ]);
+            } catch (\Exception $e) {
+
+                // Caso ocorra algum erro, retorna para a página anterior
+                return back();
+            }
+        }else if($a1 && !$a2){
+            DB::table('seguidores')->where('user1_id', $user)->where('user2_id', $id)->update(['aceito' => true]);
+        }else if(!$a1 && $a2){
+            DB::table('seguidores')->where('user1_id', $id)->where('user2_id', $user)->update(['aceito' => true]);
+        }
+        return back();
+    }
+
+    public function destroy($id){
+        $user = Auth::user()->id;
+        $a1 = self::getSeguidores($user, $id);
+        $a2 = self::getSeguidores($id, $user);
+
+        if($a1 && !$a2){
+            DB::table('seguidores')->where('user1_id', $user)->where('user2_id', $id)->delete();
+        }else if(!$a1 && $a2){
+            DB::table('seguidores')->where('user1_id', $id)->where('user2_id', $user)->delete();
+        }
+        return back();
+    }
+    protected function getSeguidores($user, $id):bool{
+        return Seguidor::where('user1_id', $user)->orWhere('user2_id', $id)->where('aceito', true)->exists();
     }
 }     
             
