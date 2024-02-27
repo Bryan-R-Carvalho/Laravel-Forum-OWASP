@@ -24,7 +24,11 @@ class SeguidoresController extends Controller
         $seguidores = User::where('id', '!=', Auth :: user()->id)
             ->where('role', '!=', 'admin')
             ->whereHas('seguidores', function($q) use ($user){
-                $q->where('user1_id', $user)->where('aceito', true)->orWhere('user2_id', $user)->where('aceito', true);
+                $q->where(function($query) use ($user) {
+                    $query->where('user1_id', $user)
+                          ->orWhere('user2_id', $user);
+                })
+                ->where('aceito', true);
             })
             ->orderBy('name')
             ->paginate(20);
@@ -72,29 +76,45 @@ class SeguidoresController extends Controller
         }
         return back();
     }
-    public function search($id){
+    
+    //faz função para buscar o usuario pelo nome ou email
+    public function search(Request $request){
         $user = Auth::user()->id;
-        $a1 = self::getSeguidores($user, $id);
-        $a2 = self::getSeguidores($id, $user);
+        $search = $request->search;
 
-        if(!$a1 && !$a2){
-            try {
-                // Tentativa de inserção na tabela
-                DB::table('seguidores')->insert([
-                    'user1_id' => $user,
-                    'user2_id' => $id
-                ]);
-            } catch (\Exception $e) {
+        $seguidores = User::where('id', '!=', $user)
+        ->where('role', '!=', 'admin')
+        ->where(function($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%");
+        })
+        ->whereHas('seguidores', function($q) use ($user){
+            $q->where(function($query) use ($user) {
+                $query->where('user1_id', $user)
+                      ->orWhere('user2_id', $user);
+            })
+            ->where('aceito', true);
+        })
+        ->orderBy('name')
+        ->paginate(20);
 
-                // Caso ocorra algum erro, retorna para a página anterior
-                return back();
-            }
-        }else if($a1 && !$a2){
-            DB::table('seguidores')->where('user1_id', $user)->where('user2_id', $id)->update(['aceito' => true]);
-        }else if(!$a1 && $a2){
-            DB::table('seguidores')->where('user1_id', $id)->where('user2_id', $user)->update(['aceito' => true]);
-        }
-        return back();
+        $sugestoes = User::where('id', '!=', $user)
+        ->where('role', '!=', 'admin')
+        ->whereDoesntHave('seguidores', function($query) use ($user) {
+            $query->where('aceito', true)
+                ->where(function($query) use ($user) {
+                    $query->where('user1_id', $user)
+                        ->orWhere('user2_id', $user);
+                });
+        })
+        ->where(function($query) use ($search) {
+        $query->where('name', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%");
+        })
+        ->paginate(20);
+
+        
+        return view('dashboard', compact('seguidores', 'sugestoes'));
     }
 
     public function destroy($id){

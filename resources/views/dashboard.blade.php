@@ -2,19 +2,23 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             <a href="{{ route('comentarios.index') }}" >Home</a>
+            <a href="{{ route('dashboard') }}" class="text-blue-400">Dashboard</a>
         </h2>
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800  ">
 
-            <form action="{{ route('seguir.show', 'search') }}" method="GET" class="p-6 pt-16">
-                <div class="flex flex-col place-items-end">
-                    <label for="search" class="block text-white font-bold mb-2  me-2 ">Pesquisar nome ou email</label>
-                    <input type="text" name="search" id="search" class="w-40 p-2 m-2 mb-2 border bg-gray-700 text-white rounded-md" placeholder=Usuário>
+           <form action="{{ route('seguir.search', 'search') }}" method="GET" class="p-6 ">
+                <div class="flex items-center justify-end">
+                    <label for="search" class="block text-white font-bold mr-2">Pesquisar nome ou email</label>
+                    <input type="text" name="search" id="search" class="w-40 p-2 mr-2 border bg-gray-700 text-white rounded-md" placeholder="Usuário">
+                    <button type="submit" class="p-2 bg-blue-500 hover:bg-blue-600 rounded-md shadow-md text-white">
+                        <span class="sr-only">Pesquisar</span>
+                        🔍
+                    </button>
                 </div>
-                <div class="flex justify-end">
-                    <button type="submit" class="px-4 py-2 me-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-md">Pesquisar</button>
-                </div>
+            </form>
+
 
             <table cellpadding="20">
                 <tr>

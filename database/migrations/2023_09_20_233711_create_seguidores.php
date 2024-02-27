@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreign('user1_id')->references('id')->on('users');
             $table->foreign('user2_id')->references('id')->on('users');           
             $table->boolean('aceito')->default(false);
-            $table->timestamps();
         });
     }
 
@@ -24,4 +23,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('seguidores');
     }
+    public $timestamps = false;
 };

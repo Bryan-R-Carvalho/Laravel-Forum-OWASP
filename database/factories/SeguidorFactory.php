@@ -10,11 +10,9 @@ class SeguidorFactory extends Factory
     public function definition(): array
     {
         return [
-            'created_at' => fake()->dateTime(),
-            'updated_at' => fake()->dateTime(),
-            'seguidor_id' => fake()->randomDigit(),
-            'seguido_id' => fake()->randomDigit(),
-            'aceitado' => fake()->boolean(),
+            'user1_id' => $this->faker->numberBetween(1, 100),
+            'user2_id' => $this->faker->numberBetween(1, 100),
+            'aceito' => $this->faker->boolean(),
         ];
     }
 }
