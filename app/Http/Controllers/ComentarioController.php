@@ -1,14 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\{
     Comentario,
-    User
 };
-
-use function Pest\Laravel\json;
+use Illuminate\Support\Facades\Auth;
 
 class ComentarioController extends Controller
 {
@@ -20,45 +17,42 @@ class ComentarioController extends Controller
         //Eloquent ORM
         //$comentarios = Comentario::where('comentario_id', null)->where('ativo', true)->orderBy('created_at', 'desc')->paginate(20);
 
-        //DB query builder
-        $comentarios = DB::table('comentarios')
-            ->join('users', 'comentarios.user_id', '=', 'users.id')
-            ->select('comentarios.*', 'users.name')
+        $comentarios = Comentario::with('user')
             ->where('comentario_id', null)
             ->where('ativo', true)
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(5);
 
         return view('home', compact('comentarios'));
     }
     public function show($id){
-        $comentario = DB::table('comentarios')
-            ->join('users', 'comentarios.user_id', '=', 'users.id')
-            ->select('comentarios.*', 'users.name')
+        $comentario = Comentario::with('user')
             ->where('comentario_id', null)
-            ->where('comentarios.id', $id)
+            ->where('id', $id)
             ->first();
-        
-        $respostas = DB::table('comentarios')
-            ->join('users', 'comentarios.user_id', '=', 'users.id')
-            ->select('comentarios.*', 'users.name')
+
+        $respostas = Comentario::with('user')
             ->where('comentario_id', $id)
             ->where('ativo', true)
-            ->orderBy('created_at', 'asc') // 'asc' ou 'desc
+            ->orderBy('created_at', 'asc')
             ->get();
+
 
         return view('comentarios.show', compact('comentario', 'respostas'));
         
     }
 
     public function store(Request $request){
-        $user = auth()->user()->id;
+        
         $request->validate([
             'conteudo' => 'required|max:120'
         ]);
-        $request->merge(['user_id' => $user, 'ativo' => true, 'comentario_id' => null]);
-       
-        $this->comentario->create($request->all());
+        $user = Auth::user()->id;
+        Comentario::create([
+            'conteudo' => $request->input('conteudo'),
+            'user_id' => $user,
+            'ativo' => true,
+        ]);
 
         return back();
     }   
@@ -88,10 +82,10 @@ class ComentarioController extends Controller
         ]);
 
         // Obter o ID do usuário autenticado
-        $user_id = auth()->id();
+        $user_id = Auth::user()->id;
 
         // Criar o comentário
-        $comentario = Comentario::create([
+        Comentario::create([
             'conteudo' => $request->input('conteudo'),
             'user_id' => $user_id,
             'ativo' => true,

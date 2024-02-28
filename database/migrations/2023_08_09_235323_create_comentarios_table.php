@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Comentario::class)->nullable()->constrained();
             $table->boolean('ativo')->default(true);
+            $table->integer('likes')->default(0);
             $table->timestamps();
         });
     }

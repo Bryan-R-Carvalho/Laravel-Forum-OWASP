@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\{
     Comentario,
      User
-    };
+};
 
 return new class extends Migration
 {
@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Comentario::class);
             $table->foreignIdFor(User::class);
-            $table->timestamps();
         });
     }
 

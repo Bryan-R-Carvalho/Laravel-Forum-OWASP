@@ -9,15 +9,19 @@ class Seguidor extends Model
 {
     use HasFactory;
     protected $table = 'seguidores';
-    protected $fillable = ['seguidor_id', 'seguido_id', 'aceitado'];
+    protected $fillable = [
+        'user1_id',
+        'user2_id',
+        'aceito'
+    ];
 
     public function seguidores()
     {
-        return $this->hasMany(User::class, 'seguidor_id');
+        return $this->hasMany(User::class, 'user1_id');
     }
     public function seguidos()
     {
-        return $this->hasMany(User::class, 'seguido_id');
+        return $this->hasMany(User::class, 'user2_id');
     }
 
 }

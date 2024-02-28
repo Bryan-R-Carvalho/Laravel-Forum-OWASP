@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Comentario;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = 
-    [
+    protected $fillable = [
         'name',
         'email',
         'password',
@@ -35,5 +35,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function likes(){
         return $this->belongsToMany(Comentario::class, 'comentarios_like')->withTimestamps();
+    }
+    public function seguidores()
+    {
+        return $this->hasMany(Seguidor::class, 'user1_id');
     }
 }

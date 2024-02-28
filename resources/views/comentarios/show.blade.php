@@ -24,7 +24,7 @@
             <div>
                 <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
                     <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
-                    <small class="text-blue-400">{{ $comentario->name }} |</small>
+                    <small class="text-blue-400">{{ $comentario->user->name }} |</small>
                     <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
                     <livewire:like-button :key="$comentario->id" :$comentario />
 
@@ -36,7 +36,7 @@
                             <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
 
                                 <div class="text-white mb-2"> {{$resposta->conteudo}}</div>
-                                <small class="text-blue-400">{{ $resposta->name }} |</small>
+                                <small class="text-blue-400">{{ $comentario->user->name }} |</small>
                                 <small class="text-blue-400">{{ \Carbon\Carbon::parse($resposta->created_at)->format('d/m/Y H:i') }}</small>
                                 <livewire:resposta-like :key="$resposta->id" :$resposta />
                             </div>
