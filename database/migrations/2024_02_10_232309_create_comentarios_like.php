@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\{
     Comentario,
      User
-    };
+};
 
 return new class extends Migration
 {
@@ -24,5 +24,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('comentarios_like');
     }
-    public $timestamps = false;
 };
