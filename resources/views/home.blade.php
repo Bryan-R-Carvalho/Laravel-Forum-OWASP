@@ -25,7 +25,7 @@
 
             <div>
                 @foreach ($comentarios as $comentario)
-                    @if($comentario->ativo === true)
+                    @if($comentario->ativo == true)
                         <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
                             <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
                             <small class="text-blue-400">{{$comentario->user->name}} |</small>
