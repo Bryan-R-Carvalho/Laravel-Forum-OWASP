@@ -48,7 +48,9 @@ npm run build
 **7.Inicie o servidor de desenvolvimento:**
 ```
 php artisan serve
-ou
+```
+**Ou**
+```
 ./vendor/bin/sail up
 ```
 
