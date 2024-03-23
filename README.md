@@ -14,34 +14,6 @@ Laravel 10: Um poderoso framework PHP que proporciona uma estrutura elegante par
 
 OWASP Top 10: As principais ameaças à segurança em aplicações web, abordadas e mitigadas ao longo do projeto.
 
-##Estrutura do Projeto:
-
-```
-
-- **documentation**
-  - introducao.md
-  - justificativa.md
-  - objetivos.md
-  - revisao_bibliografica.md
-  - metodologia.md
-  - desenvolvimento.md
-  - resultados.md
-  - conclusoes.md
-
-- **src**
-  - **app**
-    - ...
-  - **resources**
-    - **views**
-      - ...
-  - **routes**
-    - web.php
-  - ...
-
-- .env.example
-- .gitignore
-- composer.json
-- ...
 
 ```
 ## Como Executar
@@ -62,9 +34,9 @@ cp .env.example .env
 ```
 Certifique-se de configurar corretamente o banco de dados.
 
-**4.Execute as migrações para criar as tabelas do banco de dados:**
+**4.Execute as migrações para criar as tabelas do banco de dados e alimenta :**
 ```
-php artisan migrate
+php artisan migrate:refresh --seed
 ```
 **5.Instale os pacotes json:**
 ```
@@ -78,8 +50,13 @@ npm run build
 ```
 php artisan serve
 ```
+ou
+```
+./vendor/bin/sail up
+```
 
 Acesse o fórum no navegador:
  http://localhost:8000
+
 ## Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
