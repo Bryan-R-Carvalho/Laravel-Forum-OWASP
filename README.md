@@ -15,7 +15,6 @@ Laravel 10: Um poderoso framework PHP que proporciona uma estrutura elegante par
 OWASP Top 10: As principais ameaças à segurança em aplicações web, abordadas e mitigadas ao longo do projeto.
 
 
-```
 ## Como Executar
 **1.Clone este repositório:**
 
