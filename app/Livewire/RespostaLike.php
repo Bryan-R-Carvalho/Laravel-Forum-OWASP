@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Comentario;
+use App\livewire\Comentario;
 use Illuminate\Support\Facades\DB;
 
 class RespostaLike extends Component

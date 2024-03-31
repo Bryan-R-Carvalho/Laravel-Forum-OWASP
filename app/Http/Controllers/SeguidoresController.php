@@ -50,7 +50,6 @@ class SeguidoresController extends Controller
 
     }
 
-
     public function store($id){
         $user = Auth::user()->id;
 
