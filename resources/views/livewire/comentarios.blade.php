@@ -2,8 +2,6 @@
     @forelse ($this->comentarios as $comentario)
         @if($comentario->ativo == true)
             <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
-                <small class="text-blue-400">{{$comentario->id}} |</small>
-
                 <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
                 <small class="text-blue-400">{{$comentario->user->name}} |</small>
                 <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
