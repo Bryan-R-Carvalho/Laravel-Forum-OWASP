@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Twytter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="shortcut icon" type="image/png" href="{{ asset('logo.png') }}" sizes="16x16" class="bg-white rounded-md">
 

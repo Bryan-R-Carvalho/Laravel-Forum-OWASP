@@ -14,17 +14,10 @@ class ComentarioController extends Controller
         protected Comentario $comentario
     ){}
     public function index(){
-        //Eloquent ORM
-        //$comentarios = Comentario::where('comentario_id', null)->where('ativo', true)->orderBy('created_at', 'desc')->paginate(20);
 
-        $comentarios = Comentario::with('user')
-            ->where('comentario_id', null)
-            ->where('ativo', true)
-            ->orderBy('created_at', 'desc')
-            ->paginate(5);
-
-        return view('home', compact('comentarios'));
+        return view('home');
     }
+    
     public function show($id){
         $comentario = Comentario::with('user')
             ->where('comentario_id', null)
@@ -95,7 +88,5 @@ class ComentarioController extends Controller
         // Retornar à página anterior com uma mensagem de sucesso
         return back();
     }
-
-    
 
 }

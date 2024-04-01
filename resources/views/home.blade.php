@@ -23,33 +23,8 @@
                 @endauth
             </div>
 
-            <div>
-                @foreach ($comentarios as $comentario)
-                    @if($comentario->ativo == true)
-                        <div class="bg-gray-800 p-5 mb-4 rounded-lg shadow-md max-w-xl">
-                            <div class="text-white mb-2"> {{$comentario->conteudo}}</div>
-                            <small class="text-blue-400">{{$comentario->user->name}} |</small>
-                            <small class="text-blue-400">{{ \Carbon\Carbon::parse($comentario->created_at)->format('d/m/Y H:i') }} |</small>
-
-                            <livewire:like-button :key="$comentario->id" :$comentario />
-
-                            @can('desativar-comentario')
-                                <form action="{{ route('comentario.desativar', $comentario->id) }}" method="POST">
-                                    @method('POST')
-                                    @csrf
-                                    <button type="submit" class="p-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md">
-                                        Desativar
-                                    </button>
-                                </form>
-                            @endcan
-                        </div>
-                    @endif
-                @endforeach
-                <div class="d-flex justify-content-center mt-5">
-                    {{ $comentarios->links()}}
-                </div>
-            </div>
-            
+            <livewire:comentarios />
+ 
         </div>
     </div>
 @endsection

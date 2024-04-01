@@ -1,22 +1,31 @@
 <?php
 
 namespace App\Livewire;
-
-use Livewire\Component;
-use App\Models\Comentario;
+use Livewire\Attributes\Computed;  
+use Illuminate\Support\Collection; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+use App\Models\Comentario;
 
-class LikeButton extends Component
-{  
-    public $comentario;
+class Comentarios extends Component
+{
+    public int $amount = 10;
     public $likes;
     public $hasLiked;
 
-    public function mount($comentario){
-        $this->comentario = $comentario;
-        $this->likes = $comentario->likes;
-        $this->hasLiked = $this->hasLiked($comentario->id);
+    #[Computed]
+    public function comentarios(): Collection
+    {
+        return Comentario::with('user')
+            ->where('comentario_id', null)
+            ->orderBy('created_at', 'desc')
+            ->take($this->amount)
+            ->get();
+    }
+    
+    public function loadMore(): void{
+        $this->amount += 5;
     }
     
     public function like($id):void{
@@ -57,7 +66,9 @@ class LikeButton extends Component
     }
 
     public function render()
-    {
-        return view('livewire.like-button');
+    {       
+        $comentarios = $this->comentarios();
+
+        return view('livewire.comentarios', ['comentarios' => $comentarios]);
     }
 }
